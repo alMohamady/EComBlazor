@@ -1,6 +1,8 @@
 ﻿using EComBlazor.db.Base;
 using EComBlazor.db.Contexts;
 using EComBlazor.lib.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,19 +28,23 @@ namespace EComBlazor.db.Repos
             return await appDb.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+           return await appDb.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public Task<T> GetById(Guid id)
+        public async Task<T> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var item = await appDb.Set<T>().FindAsync(id);
+            if (item == null)
+                throw new ItemNotFoundEx($"Item '{id}' not found");
+            return item!;
         }
 
-        public Task<int> UpdateAsync(T entity)
+        public async Task<int> UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            appDb.Set<T>().Update(entity);
+            return await appDb.SaveChangesAsync();
         }
     }
 }

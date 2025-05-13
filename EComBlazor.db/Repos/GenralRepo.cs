@@ -1,4 +1,6 @@
 ﻿using EComBlazor.db.Base;
+using EComBlazor.db.Contexts;
+using EComBlazor.lib.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +9,21 @@ using System.Threading.Tasks;
 
 namespace EComBlazor.db.Repos
 {
-    public class GenralRepo<T> : IGenralRepo<T> where T : class
+    public class GenralRepo<T>(AppDbContext appDb) : IGenralRepo<T> where T : class
     {
-        public Task<int> AddAsync(T entity)
+        public async Task<int> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            appDb.Set<T>().Add(entity);
+            return await appDb.SaveChangesAsync();
         }
 
-        public Task<int> DeleteAsync(Guid id)
+        public async Task<int> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await appDb.Set<T>().FindAsync(id);
+            if (entity == null)
+                throw new ItemNotFoundEx($"Item '{id}' not found");
+            appDb.Set<T>().Remove(entity);
+            return await appDb.SaveChangesAsync();
         }
 
         public Task<IEnumerable<T>> GetAllAsync()

@@ -13,6 +13,10 @@ namespace EComBlazor.db.Entities
         [Key]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "field Name is reqired")]
+        [MaxLength(50, ErrorMessage = "Max field Name is 50 char")]
         public string? Name { get; set; }
+
+        public ICollection<Product>? Products { get; set; }
     }
 }

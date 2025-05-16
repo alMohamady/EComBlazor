@@ -1,4 +1,6 @@
-﻿using EComBlazor.db.Contexts;
+﻿using EComBlazor.db.Base;
+using EComBlazor.db.Contexts;
+using EComBlazor.db.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

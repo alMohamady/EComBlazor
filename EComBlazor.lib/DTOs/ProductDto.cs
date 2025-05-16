@@ -18,4 +18,10 @@ namespace EComBlazor.lib.DTOs
     {
         public Guid? Id { get; set; }
     }
+
+    public class GetProducts : ProductDto
+    {
+        public Guid? Id { get; set; }
+        public GetCategoryDto? Category { get; set; }
+    }
 }

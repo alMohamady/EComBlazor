@@ -19,6 +19,6 @@ namespace EComBlazor.lib.DTOs
     public class GetCategoryDto : CategoryDto
     {
         public Guid Id { get; set; }
-        public ICollection<GetProducts>? Products { get; set; }
+        public ICollection<GetProductDto>? Products { get; set; }
     }
 }

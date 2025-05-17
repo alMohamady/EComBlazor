@@ -1,4 +1,6 @@
-﻿using EComBlazor.lib.Base;
+﻿using EComBlazor.db.Base;
+using EComBlazor.db.Entities;
+using EComBlazor.lib.Base;
 using EComBlazor.lib.DTOs;
 using System;
 using System.Collections.Generic;
@@ -6,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EComBlazor.lib.Services
+namespace EComBlazor.Services
 {
-    class ProductServices : IProductService
+    class ProductServices(IGenralRepo<Product> product) : IProductService
     {
-        public Task<ResponseDto> AddAsync(ProductDto entity)
+        public async Task<ResponseDto> AddAsync(ProductDto entity)
         {
-            throw new NotImplementedException();
+             int result = await product.AddAsync()
         }
 
         public Task<ResponseDto> DeleteAsync(Guid id)

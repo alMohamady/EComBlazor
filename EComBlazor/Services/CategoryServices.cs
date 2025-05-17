@@ -1,4 +1,7 @@
-﻿using EComBlazor.lib.Base;
+﻿using AutoMapper;
+using EComBlazor.db.Base;
+using EComBlazor.db.Entities;
+using EComBlazor.lib.Base;
 using EComBlazor.lib.DTOs;
 using System;
 using System.Collections.Generic;
@@ -8,31 +11,87 @@ using System.Threading.Tasks;
 
 namespace EComBlazor.lib.Services
 {
-    public class CategoryServices : ICategoryService
+    public class CategoryServices(IGenralRepo<Category> category, IMapper mapper) : ICategoryService
     {
-        public Task<ResponseDto> AddAsync(CategoryDto entity)
+        public async Task<ResponseDto> AddAsync(CategoryDto entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var mappData = mapper.Map<Category>(entity);
+                int result = await category.AddAsync(mappData);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't save new ?!");
         }
 
-        public Task<ResponseDto> DeleteAsync(Guid id)
+        public async Task<ResponseDto> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int result = await category.DeleteAsync(id);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't delete ?!");
         }
 
-        public Task<IEnumerable<GetCategoryDto>> GetAllAsync()
+        public async Task<IEnumerable<GetCategoryDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await category.GetAllAsync();
+                if (data == null || !data.Any()) return [];
+                return mapper.Map<IEnumerable<GetCategoryDto>>(data);
+            }
+            catch
+            {
+                return [];
+            }
         }
 
-        public Task<GetCategoryDto> GetById(Guid id)
+        public async Task<GetCategoryDto> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await category.GetById(id);
+                if (data == null) return new GetCategoryDto();
+                return mapper.Map<GetCategoryDto>(data);
+            }
+            catch
+            {
+                return new GetCategoryDto();
+            }
         }
 
-        public Task<ResponseDto> UpdateAsync(UpdateCategoryDto entity)
+        public async Task<ResponseDto> UpdateAsync(UpdateCategoryDto entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var mappData = mapper.Map<Category>(entity);
+                int result = await category.UpdateAsync(mappData);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't update ?!");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EComBlazor.db.Base;
+﻿using AutoMapper;
+using EComBlazor.db.Base;
 using EComBlazor.db.Entities;
 using EComBlazor.lib.Base;
 using EComBlazor.lib.DTOs;
@@ -10,31 +11,87 @@ using System.Threading.Tasks;
 
 namespace EComBlazor.Services
 {
-    class ProductServices(IGenralRepo<Product> product) : IProductService
+    class ProductServices(IGenralRepo<Product> product, IMapper mapper) : IProductService
     {
         public async Task<ResponseDto> AddAsync(ProductDto entity)
         {
-             int result = await product.AddAsync()
+            try
+            {
+                var mappData = mapper.Map<Product>(entity);
+                int result = await product.AddAsync(mappData);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't save new ?!");
         }
 
-        public Task<ResponseDto> DeleteAsync(Guid id)
+        public async Task<ResponseDto> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int result = await product.DeleteAsync(id);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't delete ?!");
         }
 
-        public Task<IEnumerable<GetProductDto>> GetAllAsync()
+        public async Task<IEnumerable<GetProductDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await product.GetAllAsync();
+                if (data == null || !data.Any()) return [];
+                return mapper.Map<IEnumerable<GetProductDto>>(data);
+            }
+            catch
+            {
+                return [];
+            }
         }
 
-        public Task<GetProductDto> GetById(Guid id)
+        public async Task<GetProductDto> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await product.GetById(id);
+                if (data == null) return new GetProductDto();
+                return mapper.Map<GetProductDto>(data);
+            }
+            catch
+            {
+                return new GetProductDto();
+            }
         }
 
-        public Task<ResponseDto> UpdateAsync(UpdateProductDto entity)
+        public async Task<ResponseDto> UpdateAsync(UpdateProductDto entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var mappData = mapper.Map<Product>(entity);
+                int result = await product.UpdateAsync(mappData);
+                if (result > 0)
+                {
+                    return new ResponseDto(true, "Success !");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDto(false, ex.Message);
+            }
+            return new ResponseDto(false, "Please check you server Can't update ?!");
         }
     }
 }

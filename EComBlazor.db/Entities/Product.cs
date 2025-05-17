@@ -20,6 +20,7 @@ namespace EComBlazor.db.Entities
         [MaxLength(100, ErrorMessage = "Max field Name is 50 char")]
         public string? Description { get; set; }
 
+        [Column(TypeName="decimal(16, 4)")]
         public decimal? Price { get; set; }
 
         public string? productImae { get; set; }

@@ -1,5 +1,6 @@
 ﻿using EComBlazor.db.Base;
 using EComBlazor.db.Contexts;
+using EComBlazor.db.Entities;
 using EComBlazor.db.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,11 +15,12 @@ namespace EComBlazor.db.Services
 {
     public static class ServiceContainer
     {
-        public static IServiceCollection AddInjectionOptions(this IServiceCollection services, IConfiguration conf)
+        public static IServiceCollection AddInjectionOptionsDb(this IServiceCollection services, IConfiguration conf)
         {
-            string conStr = "";
+            string conStr = "ConStr";
+            string? con = conf.GetConnectionString(conStr);
             services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlServer(conf.GetConnectionString(conStr),
+                options.UseSqlServer(con,
                 sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly);
@@ -26,6 +28,8 @@ namespace EComBlazor.db.Services
                 }),
                 ServiceLifetime.Scoped
                 );
+            services.AddScoped<IGenralRepo<Category>, GenralRepo<Category>>();
+            services.AddScoped<IGenralRepo<Product>, GenralRepo<Product>>();
             return services;
         }
     }

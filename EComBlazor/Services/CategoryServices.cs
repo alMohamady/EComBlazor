@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EComBlazor.lib.Services
+namespace EComBlazor.Services
 {
     public class CategoryServices(IGenralRepo<Category> category, IMapper mapper) : ICategoryService
     {

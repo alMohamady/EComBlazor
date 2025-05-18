@@ -1,3 +1,8 @@
+using EComBlazor.Classes;
+using EComBlazor.db.Contexts;
+using EComBlazor.db.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+//Add injection options 
+builder.Services.AddInjectionOptionsDb(builder.Configuration);
+builder.Services.AddInjectionOptionsApi();
 
 var app = builder.Build();
 

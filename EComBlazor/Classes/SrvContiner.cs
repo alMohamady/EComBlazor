@@ -1,12 +1,11 @@
 ﻿using EComBlazor.lib.Base;
-using EComBlazor.lib.Services;
 using EComBlazor.Services;
 
 namespace EComBlazor.Classes
 {
     public static class SrvContiner
     {
-        public static IServiceCollection AddInjectionOptions(this IServiceCollection services)
+        public static IServiceCollection AddInjectionOptionsApi(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingConfig));
             services.AddScoped<IProductService, ProductServices>();

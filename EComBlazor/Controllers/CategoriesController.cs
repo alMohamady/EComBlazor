@@ -23,21 +23,21 @@ namespace EComBlazor.Controllers
             return result != null ? Ok(result) : NotFound(id);
         }
 
-        [HttpGet("add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddNew(CategoryDto item)
         {
             var result = await srvCategory.AddAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }
 
-        [HttpGet("update")]
+        [HttpPut("update")]
         public async Task<IActionResult> Update(UpdateCategoryDto item)
         {
             var result = await srvCategory.UpdateAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }
 
-        [HttpGet("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await srvCategory.DeleteAsync(id);

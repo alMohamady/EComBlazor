@@ -21,4 +21,8 @@
     <ProjectReference Include="..\EComBlazor.lib\EComBlazor.lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Authentication\" />
+  </ItemGroup>
+
 </Project>

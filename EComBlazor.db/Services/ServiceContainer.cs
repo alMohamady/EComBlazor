@@ -1,8 +1,10 @@
 ﻿using EComBlazor.db.Base;
+using EComBlazor.db.Base.Authentication;
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities;
 using EComBlazor.db.Entities.Identity;
 using EComBlazor.db.Repos;
+using EComBlazor.db.Repos.Authentication;
 using EComBlazor.lib.Base;
 using EComBlazor.lib.Exceptions;
 using EComBlazor.lib.Services;
@@ -73,7 +75,9 @@ namespace EComBlazor.db.Services
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(conf["JWT:Key"]!))
                 };
             });
-
+            services.AddScoped<IUserManagement, UserManagement>();
+            services.AddScoped<ITokenManagement, TokenManagement>();
+            services.AddScoped<IRoleManagment, RoleManagment>();
             return services;
         }
 

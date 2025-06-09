@@ -1,5 +1,6 @@
 ﻿using EComBlazor.db.Entities;
 using EComBlazor.db.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EComBlazor.db.Contexts
 {
-    public class AppDbContext : DbContext 
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         {

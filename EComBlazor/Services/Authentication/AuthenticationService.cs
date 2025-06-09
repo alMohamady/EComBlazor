@@ -45,14 +45,42 @@ namespace EComBlazor.Services.Authentication
             return new ResponseDto { success = true, msessage = "success user account has been created" };
         }
 
-        public Task<LogInResponseDto> LogInUser(LogInUser user)
+        public async Task<LogInResponseDto> LogInUser(LogInUser user)
         {
-            throw new NotImplementedException();
+            var _validationResult = await validationServices.ValidationAsync(user, logInUserValidator);
+            if (!_validationResult.success) return new LogInResponseDto(false, _validationResult.msessage);
+
+            var mappedModel = mapper.Map<AppUser>(user);
+            mappedModel.PasswordHash = user.Password;
+
+            bool loginResult = await userManagement.LogInUser(mappedModel);
+            if (!loginResult)
+                return new LogInResponseDto { msessage = "invalid user credintionals" };
+
+            var _user = await userManagement.GetUserByEmail(user.Email);
+            var cliams = await userManagement.GetUserClaims(user.Email);
+
+            string jwtToken = tokenManagement.GenrateToken(cliams);
+            string refreshToken = tokenManagement.GetRefreshToken();
+
+            int saveTokenReult = await tokenManagement.UpdateRefreshToken(_user!.Id, refreshToken);
+            return saveTokenReult <= 0 ? new LogInResponseDto { msessage = "Internal Server Error" } :
+                new LogInResponseDto { success = true, Token = jwtToken, RefreshToken = refreshToken };
         }
 
-        public Task<LogInResponseDto> RetriveToken(string refreshToken)
+        public async Task<LogInResponseDto> RetriveToken(string refreshToken)
         {
-            throw new NotImplementedException();
+            bool validateTokenResult = await tokenManagement.ValidateRefreshToken(refreshToken);
+            if (!validateTokenResult)
+                return new LogInResponseDto { msessage = "Invalid Token" };
+
+            string userId = await tokenManagement.GetUserIdByRefreshToken(refreshToken);
+            AppUser? appUser = await userManagement.GetuserById(userId);
+            var claims = await userManagement.GetUserClaims(appUser!.Email!);
+            string newJwtToken = tokenManagement.GenrateToken(claims);
+            string newRefreshToken = tokenManagement.GetRefreshToken();
+            await tokenManagement.UpdateRefreshToken(userId, newRefreshToken);
+            return new LogInResponseDto { success = true, Token= newJwtToken, RefreshToken = newRefreshToken };
         }
     }
 }

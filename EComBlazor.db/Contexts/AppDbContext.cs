@@ -1,4 +1,5 @@
 ﻿using EComBlazor.db.Entities;
+using EComBlazor.db.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -18,5 +19,6 @@ namespace EComBlazor.db.Contexts
 
         public DbSet<Product> products { get; set; }
         public DbSet<Category> categories { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

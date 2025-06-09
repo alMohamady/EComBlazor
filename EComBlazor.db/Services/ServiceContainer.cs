@@ -2,7 +2,9 @@
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities;
 using EComBlazor.db.Repos;
+using EComBlazor.lib.Base;
 using EComBlazor.lib.Exceptions;
+using EComBlazor.lib.Services;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,7 @@ namespace EComBlazor.db.Services
                 );
             services.AddScoped<IGenralRepo<Category>, GenralRepo<Category>>();
             services.AddScoped<IGenralRepo<Product>, GenralRepo<Product>>();
+            services.AddScoped(typeof(IAppLoger<>), typeof(SerilogAppAdapter<>));
             return services;
         }
 

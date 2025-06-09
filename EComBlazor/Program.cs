@@ -2,10 +2,20 @@ using EComBlazor.Classes;
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("log/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 // Add services to the container.
+builder.Host.UseSerilog();
+Log.Logger.Information("Application just started .............");
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -16,20 +26,32 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInjectionOptionsDb(builder.Configuration);
 builder.Services.AddInjectionOptionsApi();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var app = builder.Build();
+    app.UseSerilogRequestLogging();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.AddMiddleWareDb();
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+    Log.Logger.Information("Appliction Try to open ..........");
+    app.Run();
+    Log.Logger.Information("Appliction Now working fine ..........");
 }
-
-app.AddMiddleWareDb();
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Logger.Error(ex, "Appliction has been stopped ...");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

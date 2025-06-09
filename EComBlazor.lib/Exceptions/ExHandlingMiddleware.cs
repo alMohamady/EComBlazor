@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EComBlazor.lib.Base;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +22,11 @@ namespace EComBlazor.lib.Exceptions
             }
             catch (DbUpdateException ex)
             {
+                var logger = context.RequestServices.GetRequiredService<IAppLoger<ExHandlingMiddleware>>();
                 var innerEx = ex.InnerException as SqlException;
                 if (innerEx != null)
                 {
+                    logger.LogError(innerEx, "SQL Exception");
                     switch(innerEx.Number)
                     {
                         case 2627: // Unique constraint violation
@@ -45,12 +49,15 @@ namespace EComBlazor.lib.Exceptions
                 }
                 else
                 {
+                    logger.LogError(ex, "Non SQL Exception");
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     await context.Response.WriteAsync("There's an error in the server");
                 }
             }
             catch (Exception ex)
             {
+                var logger = context.RequestServices.GetRequiredService<IAppLoger<ExHandlingMiddleware>>();
+                logger.LogError(ex, "Other Exception");
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync($"There's an error in the server: {ex.Message}");
             }

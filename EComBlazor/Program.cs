@@ -53,5 +53,6 @@ catch (Exception ex)
 }
 finally
 {
+    Log.Logger.Information("Appliction Now colsed ..........");
     Log.CloseAndFlush();
 }

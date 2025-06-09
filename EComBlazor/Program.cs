@@ -26,9 +26,23 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInjectionOptionsDb(builder.Configuration);
 builder.Services.AddInjectionOptionsApi();
 
+//CORS config 
+builder.Services.AddCors(builder =>
+{
+    builder.AddDefaultPolicy(options =>
+    {
+        options.AllowAnyHeader()
+        .AllowAnyMethod()
+        //.WithOrigins("https://localhost:27829");
+        .AllowAnyOrigin()
+        .AllowCredentials();
+    });
+});
+
 try
 {
     var app = builder.Build();
+    app.UseCors();
     app.UseSerilogRequestLogging();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())

@@ -2,7 +2,9 @@
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities;
 using EComBlazor.db.Repos;
+using EComBlazor.lib.Exceptions;
 using EntityFramework.Exceptions.SqlServer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,12 @@ namespace EComBlazor.db.Services
             services.AddScoped<IGenralRepo<Category>, GenralRepo<Category>>();
             services.AddScoped<IGenralRepo<Product>, GenralRepo<Product>>();
             return services;
+        }
+
+        public static IApplicationBuilder AddMiddleWareDb(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExHandlingMiddleware>();
+            return app;
         }
     }
 }

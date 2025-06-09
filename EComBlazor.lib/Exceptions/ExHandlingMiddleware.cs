@@ -32,6 +32,14 @@ namespace EComBlazor.lib.Exceptions
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;
                             await context.Response.WriteAsync($"Can't accept null value: {innerEx.Message}");
                             break;
+                        case 574: // Forign Key constraint violation
+                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                            await context.Response.WriteAsync($"Forign Key constraint violation: {innerEx.Message}");
+                            break;
+                        default:
+                            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                            await context.Response.WriteAsync($"There's an error in the server: {innerEx.Message}");
+                            break;
                     }
                 }
                 else
@@ -39,6 +47,11 @@ namespace EComBlazor.lib.Exceptions
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     await context.Response.WriteAsync("There's an error in the server");
                 }
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                await context.Response.WriteAsync($"There's an error in the server: {ex.Message}");
             }
         }
     }

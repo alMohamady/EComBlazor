@@ -26,6 +26,7 @@ namespace EComBlazor.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddNew(ProductDto item)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await srvProcude.AddAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }
@@ -33,6 +34,7 @@ namespace EComBlazor.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update(UpdateProductDto item)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await srvProcude.UpdateAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }

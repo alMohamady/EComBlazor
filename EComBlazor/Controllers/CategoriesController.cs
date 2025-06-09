@@ -26,6 +26,7 @@ namespace EComBlazor.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddNew(CategoryDto item)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var result = await srvCategory.AddAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }
@@ -33,6 +34,7 @@ namespace EComBlazor.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update(UpdateCategoryDto item)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await srvCategory.UpdateAsync(item);
             return result != null ? Ok(result) : BadRequest(item);
         }

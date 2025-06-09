@@ -2,6 +2,7 @@
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities;
 using EComBlazor.db.Repos;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace EComBlazor.db.Services
                 {
                     sqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly);
                     sqlOptions.EnableRetryOnFailure();
-                }),
+                }).UseExceptionProcessor(),
                 ServiceLifetime.Scoped
                 );
             services.AddScoped<IGenralRepo<Category>, GenralRepo<Category>>();

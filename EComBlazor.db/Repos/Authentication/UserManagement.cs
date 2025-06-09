@@ -2,6 +2,7 @@
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,7 @@ namespace EComBlazor.db.Repos.Authentication
 
         public async Task<IEnumerable<AppUser>> GetAllUsers()
         {
-            //return await context.Users.ToListAsync();
-            throw new NotImplementedException();
+            return await context.Users.ToListAsync();
         }
 
         public async Task<AppUser?> GetUserByEmail(string userEmail)
@@ -68,11 +68,9 @@ namespace EComBlazor.db.Repos.Authentication
 
         public async Task<int> RemoveUserById(string userId)
         {
-            //var user = await context.Users.FirstOrDefaultAsnc(x => x.Email == userId);
-            //context.Users.Remove(user);
-            //return await context.SaveChangesAsync();
-
-            throw new NotImplementedException();
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Email == userId);
+            context.Users.Remove(user!);
+            return await context.SaveChangesAsync();
         }
     }
 }

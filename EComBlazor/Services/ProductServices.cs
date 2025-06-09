@@ -15,19 +15,19 @@ namespace EComBlazor.Services
     {
         public async Task<ResponseDto> AddAsync(ProductDto entity)
         {
-            try
-            {
+            //try
+            //{
                 var mappData = mapper.Map<Product>(entity);
                 int result = await product.AddAsync(mappData);
                 if (result > 0)
                 {
                     return new ResponseDto(true, "Success !");
                 }
-            }
-            catch (Exception ex)
-            {
-                return new ResponseDto(false, ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new ResponseDto(false, ex.Message);
+            //}
             return new ResponseDto(false, "Please check you server Can't save new ?!");
         }
 

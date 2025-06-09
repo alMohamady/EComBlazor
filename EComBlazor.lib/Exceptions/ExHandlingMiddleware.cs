@@ -13,6 +13,7 @@ namespace EComBlazor.lib.Exceptions
     {
         public async Task InvokeAsync(HttpContext context)
         {
+            context.Response.ContentType = "application/json";
             try
             {
                 await _next(context);
@@ -32,7 +33,7 @@ namespace EComBlazor.lib.Exceptions
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;
                             await context.Response.WriteAsync($"Can't accept null value: {innerEx.Message}");
                             break;
-                        case 574: // Forign Key constraint violation
+                        case 547: // Forign Key constraint violation
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;
                             await context.Response.WriteAsync($"Forign Key constraint violation: {innerEx.Message}");
                             break;

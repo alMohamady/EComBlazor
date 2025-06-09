@@ -1,15 +1,20 @@
-﻿using EComBlazor.Base;
+﻿using AutoMapper;
+using EComBlazor.Base;
 using EComBlazor.db.Base.Authentication;
 using EComBlazor.lib.Base;
 using EComBlazor.lib.DTOs;
 using EComBlazor.lib.DTOs.Identity;
+using FluentValidation;
 
 namespace EComBlazor.Services.Authentication
 {
     public class AuthenticationService(ITokenManagement tokenManagement, IUserManagement userManagement
-        ,IRoleManagment roleManagment, IAppLoger<AuthenticationService> logger) : IAuthenticationService
+        ,IRoleManagment roleManagment, IAppLoger<AuthenticationService> logger, IMapper mapper,
+        IValidator<CreateUser> createUserValidator, IValidator<LogInUser> logInUserValidator,
+        IValidationServices validationServices
+        ) : IAuthenticationService
     {
-        public Task<ResponseDto> CreateUser(CreateUser user)
+        public async Task<ResponseDto> CreateUser(CreateUser user)
         {
             throw new NotImplementedException();
         }

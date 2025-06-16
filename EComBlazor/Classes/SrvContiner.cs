@@ -21,6 +21,8 @@ namespace EComBlazor.Classes
             services.AddValidatorsFromAssemblyContaining<LogInUserValidator>();
 
             services.AddScoped<IValidationServices, ValidationServices>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             return services;
         }
     }

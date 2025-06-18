@@ -23,4 +23,15 @@ namespace EComBlazor.Validations.Identity
                 .Equal(x => x.Password).WithMessage("Pawwords not equals");
         }
     }
+
+    public class LogInUserValidator : AbstractValidator<LogInUser>
+    {
+        public LogInUserValidator()
+        {
+            RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("Invalid Email foramt");
+
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required");
+        }
+    }
 }

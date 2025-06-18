@@ -18,7 +18,6 @@ namespace EComBlazor.Classes
 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
-            services.AddValidatorsFromAssemblyContaining<LogInUserValidator>();
 
             services.AddScoped<IValidationServices, ValidationServices>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();

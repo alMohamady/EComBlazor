@@ -63,7 +63,7 @@ namespace EComBlazor.db.Repos.Authentication
             if (_user == null) return false;
             var roleName = await role.GetUserRole(user!.Email!);
             if (string.IsNullOrEmpty(roleName)) return false;
-            return await userManager.CheckPasswordAsync(_user, _user.PasswordHash!);
+            return await userManager.CheckPasswordAsync(_user, user.PasswordHash!);
         }
 
         public async Task<int> RemoveUserById(string userId)

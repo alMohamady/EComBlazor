@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using EComBlazor.db.Entities;
+using EComBlazor.db.Entities.Identity;
 using EComBlazor.lib.DTOs;
+using EComBlazor.lib.DTOs.Identity;
+using EComBlazor.Validations.Identity;
 
 namespace EComBlazor.Classes
 {
@@ -12,6 +15,8 @@ namespace EComBlazor.Classes
             CreateMap<ProductDto, Product>();
             CreateMap<Category, GetCategoryDto>();
             CreateMap<Product, GetProductDto>();
+            CreateMap<CreateUser, AppUser>();
+            CreateMap<LogInUser, AppUser>();
         }
     }
 }

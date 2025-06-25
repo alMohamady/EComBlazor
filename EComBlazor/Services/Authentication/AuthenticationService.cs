@@ -63,7 +63,12 @@ namespace EComBlazor.Services.Authentication
             string jwtToken = tokenManagement.GenrateToken(cliams);
             string refreshToken = tokenManagement.GetRefreshToken();
 
-            int saveTokenReult = await tokenManagement.AddRefreshToken(_user!.Id, refreshToken);
+            int saveTokenReult = 0;
+            bool userCurrentToken = await tokenManagement.ValidateRefreshToken(refreshToken);
+            if (userCurrentToken)
+                saveTokenReult = await tokenManagement.UpdateRefreshToken(_user!.Id, refreshToken);
+            else
+                saveTokenReult = await tokenManagement.AddRefreshToken(_user!.Id, refreshToken);
             return saveTokenReult <= 0 ? new LogInResponseDto { msessage = "Internal Server Error" } :
                 new LogInResponseDto { success = true, Token = jwtToken, RefreshToken = refreshToken };
         }

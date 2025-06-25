@@ -23,8 +23,8 @@ namespace EComBlazor.Controllers
             return result.success ? Ok(result) : BadRequest(result);
         }
 
-        [HttpGet("refreshToken/{refreshToken}")]
-        public async Task<IActionResult> RefreshToken(string refreshToken)
+        [HttpGet("refreshToken")]
+        public async Task<IActionResult> RefreshToken([FromQuery]string refreshToken)
         {
             var result = await service.RetriveToken(refreshToken);
             return result.success ? Ok(result) : BadRequest(result);

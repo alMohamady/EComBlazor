@@ -1,10 +1,12 @@
 ﻿using EComBlazor.db.Base;
 using EComBlazor.db.Base.Authentication;
+using EComBlazor.db.Base.Paymants;
 using EComBlazor.db.Contexts;
 using EComBlazor.db.Entities;
 using EComBlazor.db.Entities.Identity;
 using EComBlazor.db.Repos;
 using EComBlazor.db.Repos.Authentication;
+using EComBlazor.db.Repos.Payments;
 using EComBlazor.lib.Base;
 using EComBlazor.lib.Exceptions;
 using EComBlazor.lib.Services;
@@ -78,6 +80,7 @@ namespace EComBlazor.db.Services
             services.AddScoped<IUserManagement, UserManagement>();
             services.AddScoped<ITokenManagement, TokenManagement>();
             services.AddScoped<IRoleManagment, RoleManagment>();
+            services.AddScoped<IPaymentMethodsRepo, PaymentMethodsRepo>();
             return services;
         }
 
